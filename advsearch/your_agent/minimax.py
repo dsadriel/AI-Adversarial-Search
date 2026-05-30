@@ -3,6 +3,30 @@ from typing import Tuple, Callable
 
 
 
+def MIN(state, alpha, beta, depth, eval_func, player):
+    if (state.is_terminal() or depth == 0):
+        return eval_func(state, player)
+    val = float('inf')
+    for legal_move in state.legal_moves():
+        val = min(val, MAX(state.next_state(legal_move), alpha, beta, depth - 1, eval_func, player))
+        beta = min(beta, val)
+        if beta <= alpha:
+            break
+    return val
+
+    
+def MAX(state, alpha, beta, depth, eval_func, player):
+    if (state.is_terminal() or depth == 0):
+        return eval_func(state, player)
+    val = float('-inf')
+    for legal_move in state.legal_moves():
+        val = max(val, MIN(state.next_state(legal_move), alpha, beta, depth - 1, eval_func, player))
+        alpha = max(alpha, val)
+        if beta <= alpha:
+            break
+    return val
+
+
 def minimax_move(state, max_depth:int, eval_func:Callable) -> Tuple[int, int]:
     """
     Returns a move computed by the minimax algorithm with alpha-beta pruning for the given game state.
@@ -13,4 +37,17 @@ def minimax_move(state, max_depth:int, eval_func:Callable) -> Tuple[int, int]:
                     and should return a float value representing the utility of the state for the player.
     :return: (int, int) tuple with x, y coordinates of the move (remember: 0 is the first row/column)
     """
-    raise NotImplementedError()
+    bestAction = None
+    bestValue = float('-inf')
+
+    for legal_move in state.legal_moves():
+        value = MIN(state.next_state(legal_move), float('-inf'), float('inf'), max_depth - 1, eval_func, state.player)
+        if value > bestValue:
+            bestValue = value
+            bestAction = legal_move
+    return bestAction
+
+
+
+
+
