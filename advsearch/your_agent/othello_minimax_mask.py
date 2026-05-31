@@ -32,12 +32,9 @@ def make_move(state) -> Tuple[int, int]:
     :return: (int, int) tuple with x, y coordinates of the move (remember: 0 is the first row/column)
     """
 
-    # o codigo abaixo apenas retorna um movimento aleatorio valido para
-    # a primeira jogada 
-    # Remova-o e coloque uma chamada para o minimax_move (que vc implementara' no modulo minimax).
-    # A chamada a minimax_move deve receber sua funcao evaluate como parametro.
+    max_depth = 4
 
-    return random.choice([(2, 3), (4, 5), (5, 4), (3, 2)])
+    return minimax_move(state, max_depth, evaluate_mask)
 
 
 def evaluate_mask(state, player:str) -> float:
@@ -49,4 +46,18 @@ def evaluate_mask(state, player:str) -> float:
     :param state: state to evaluate (instance of GameState)
     :param player: player to evaluate the state for (B or W)
     """
-    return 0   # substitua pelo seu codigo
+
+    opponent = Board.opponent(player)
+    board_size = len(EVAL_TEMPLATE)
+    heuristic_value = 0
+    
+    for x in range(board_size):
+        for y in range(board_size):
+            tile = state.board.tiles[x][y]
+            
+            if tile == player:
+                heuristic_value += EVAL_TEMPLATE[x][y]
+            elif tile == opponent:
+                heuristic_value -= EVAL_TEMPLATE[x][y]
+
+    return heuristic_value
