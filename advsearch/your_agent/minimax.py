@@ -1,33 +1,41 @@
 import random
+import time
+from .utils import TimeoutException
 from typing import Tuple, Callable
 
 
 
-def MIN(state, alpha, beta, depth, eval_func, player):
+def MIN(state, alpha, beta, depth, start, eval_func, player):
+    if time.time() - start > 4.9: 
+        raise TimeoutException()
+
     if (state.is_terminal() or depth == 0):
         return eval_func(state, player)
     val = float('inf')
     for legal_move in state.legal_moves():
-        val = min(val, MAX(state.next_state(legal_move), alpha, beta, depth - 1, eval_func, player))
+        val = min(val, MAX(state.next_state(legal_move), alpha, beta, depth - 1, start, eval_func, player))
         beta = min(beta, val)
         if beta <= alpha:
             break
     return val
 
     
-def MAX(state, alpha, beta, depth, eval_func, player):
+def MAX(state, alpha, beta, depth, start, eval_func, player):
+    if time.time() - start > 4.9:
+        raise TimeoutException()
+
     if (state.is_terminal() or depth == 0):
         return eval_func(state, player)
     val = float('-inf')
     for legal_move in state.legal_moves():
-        val = max(val, MIN(state.next_state(legal_move), alpha, beta, depth - 1, eval_func, player))
+        val = max(val, MIN(state.next_state(legal_move), alpha, beta, depth - 1, start, eval_func, player))
         alpha = max(alpha, val)
         if beta <= alpha:
             break
     return val
 
 
-def minimax_move(state, max_depth:int, eval_func:Callable) -> Tuple[int, int]:
+def minimax_move(state, max_depth:int, start, eval_func:Callable) -> Tuple[int, int]:
     """
     Returns a move computed by the minimax algorithm with alpha-beta pruning for the given game state.
     :param state: state to make the move (instance of GameState)
@@ -41,7 +49,7 @@ def minimax_move(state, max_depth:int, eval_func:Callable) -> Tuple[int, int]:
     bestValue = float('-inf')
 
     for legal_move in state.legal_moves():
-        value = MIN(state.next_state(legal_move), float('-inf'), float('inf'), max_depth - 1, eval_func, state.player)
+        value = MIN(state.next_state(legal_move), float('-inf'), float('inf'), max_depth - 1, start, eval_func, state.player)
         if value > bestValue:
             bestValue = value
             bestAction = legal_move

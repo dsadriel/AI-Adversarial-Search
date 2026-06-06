@@ -69,7 +69,7 @@ O jogador 'random' se localiza em `advsearch/randomplayer/agent.py`. Para jogar 
 basta substituir player1 ou 2 por esse caminho. Como exemplo, inicie
 uma partida random vs. random de othello para ver o servidor funcionando:
 
-`python othello server.py advsearch/randomplayer/agent.py advsearch/randomplayer/agent.py -d 1 -p 0.3`
+`python server.py othello advsearch/randomplayer/agent.py advsearch/randomplayer/agent.py -d 1 -p 0.3`
 
 O delay pode ser de 1 segundo porque o jogador random é muito rápido (e muito incompetente). O passo é de 0.3 segundos para acompanhar o progresso da partida (pode acelerar ou reduzir conforme a necessidade).
 

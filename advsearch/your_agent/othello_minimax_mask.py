@@ -1,4 +1,6 @@
 import random
+import time
+from .utils import TimeoutException
 from typing import Tuple
 from ..othello.gamestate import GameState
 from ..othello.board import Board
@@ -31,11 +33,16 @@ def make_move(state) -> Tuple[int, int]:
     :param state: state to make the move
     :return: (int, int) tuple with x, y coordinates of the move (remember: 0 is the first row/column)
     """
+    start = time.time()
+    for depth in range (1, 65): #range para em stop-1
 
-    max_depth = 4
+        try:
+            move = minimax_move(state, depth, start, evaluate_mask)
+        
+        except TimeoutException:
+            break
 
-    return minimax_move(state, max_depth, evaluate_mask)
-
+    return move 
 
 def evaluate_mask(state, player:str) -> float:
     """
@@ -48,16 +55,15 @@ def evaluate_mask(state, player:str) -> float:
     """
 
     opponent = Board.opponent(player)
-    board_size = len(EVAL_TEMPLATE)
     heuristic_value = 0
     
-    for x in range(board_size):
-        for y in range(board_size):
-            tile = state.board.tiles[x][y]
+    for lin in range(8):
+        for col in range(8):
+            tile = state.board.tiles[lin][col]
             
             if tile == player:
-                heuristic_value += EVAL_TEMPLATE[x][y]
+                heuristic_value += EVAL_TEMPLATE[lin][col]
             elif tile == opponent:
-                heuristic_value -= EVAL_TEMPLATE[x][y]
+                heuristic_value -= EVAL_TEMPLATE[lin][col]
 
     return heuristic_value
