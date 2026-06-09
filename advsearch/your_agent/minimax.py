@@ -3,10 +3,11 @@ import time
 from .utils import TimeoutException
 from typing import Tuple, Callable
 
-
+# default = 4.9
+TIME_LIMIT = 4.9
 
 def MIN(state, alpha, beta, depth, start, eval_func, player):
-    if time.time() - start > 4.9: 
+    if time.time() - start > TIME_LIMIT: 
         raise TimeoutException()
 
     if (state.is_terminal() or depth == 0):
@@ -21,7 +22,7 @@ def MIN(state, alpha, beta, depth, start, eval_func, player):
 
     
 def MAX(state, alpha, beta, depth, start, eval_func, player):
-    if time.time() - start > 4.9:
+    if time.time() - start > TIME_LIMIT:
         raise TimeoutException()
 
     if (state.is_terminal() or depth == 0):
