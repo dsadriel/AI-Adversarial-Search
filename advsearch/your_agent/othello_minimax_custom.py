@@ -13,9 +13,6 @@ from .utils import normalize
 # do seu agente.
 
 CORNERS = [(0, 0), (0, 7), (7, 0), (7, 7)]
-W_CAPTURED = 1.0
-W_POTENTIAL = 0.4
-W_UNLIKELY = 1.0
 
 
 def make_move(state) -> Tuple[int, int]:
@@ -46,7 +43,6 @@ def evaluate_custom(state, player:str) -> float:
     :param state: state to evaluate (instance of GameState)
     :param player: player to evaluate the state for (B or W)
     """
-    # heuristic_value = corners * x1 + stability * x2 + mobility * x3
     W_CORNERS = 5
     W_STABILITY = 5
     W_MOBILITY = 1
@@ -66,6 +62,10 @@ def mobility_heuristic(state, player:str) -> float:
     return normalize(num_player_moves, num_opponent_moves)
 
 def corners_heuristic(state, player:str) -> float:
+    W_CAPTURED = 1.0
+    W_POTENTIAL = 0.4
+    W_UNLIKELY = 1.0
+
     capt_player, capt_opponent = evaluate_corners_captured(state, player)
     pot_player, pot_opponent = evaluate_potential_corners(state, player)
     unl_player, unl_opponent = evaluate_unlikely_corners(state, player)
@@ -212,21 +212,20 @@ def is_unstable(state, player:str, tile_position:tuple) -> bool:
     """
     opponent = Board.opponent(player)
 
-    directions_pairs = [(0,1), (2,3), (4,7), (5,6)] #emparelha corretamente as directions de board.py para usarmos em duplas
+    directions_pairs = [(0,1), (2,3), (4,7), (5,6)] #emparelha corretamente as directions opostas de board.py para usarmos em duplas
 
-    #começar no segundo item e ir de 2 em 2 (começa em down e usa up, down. vai de 2 em 2 para nao usar por ex down, left)
     for dir1_index, dir2_index in directions_pairs:
-        found_opponent = False
-        found_blank = False
+        dir1_found_opponent = False
+        dir1_found_blank = False
 
-        found_opponent, found_blank = found_blank_opponent(Board.DIRECTIONS[dir1_index], tile_position, state, player, opponent)
+        dir1_found_opponent, dir1_found_blank = found_opponent_or_blank(Board.DIRECTIONS[dir1_index], tile_position, state, player, opponent)
 
         #só vai em frente se achou um ou outro. Se nenhum encontrado, a peça não é capturavel no eixo proposto
-        if (found_opponent or found_blank):
-            mask_found_opponent, mask_found_blank = found_blank_opponent(Board.DIRECTIONS[dir2_index], tile_position, state, player, opponent)
+        if (dir1_found_opponent or dir1_found_blank):
+            dir2_found_opponent, dir2_found_blank = found_opponent_or_blank(Board.DIRECTIONS[dir2_index], tile_position, state, player, opponent)
 
-            found_opponent = found_opponent or mask_found_opponent
-            found_blank = found_blank or mask_found_blank
+            found_opponent = dir1_found_opponent or dir2_found_opponent
+            found_blank = dir1_found_blank or dir2_found_blank
 
             if found_opponent and found_blank:
                 return True
@@ -239,7 +238,7 @@ Percorre a partir da posiçao do tile na direçao imposta até parar de encontra
 Se após percorrer lista de suas peças, encontrou peça do oponente, retorna (1,0)
 Se após percorrer lista de suas peças, encontrou espaço vazio, retorna (0,1)
 """
-def found_blank_opponent(direction, tile_position, state, player, opponent) -> tuple:
+def found_opponent_or_blank(direction, tile_position, state, player, opponent) -> tuple:
     dx, dy = direction
     tx, ty = tile_position
 
