@@ -14,6 +14,9 @@ from .utils import normalize
 
 CORNERS = [(0, 0), (0, 7), (7, 0), (7, 7)]
 
+MID = 20
+
+LATE = 50
 
 def make_move(state) -> Tuple[int, int]:
     """
@@ -43,16 +46,43 @@ def evaluate_custom(state, player:str) -> float:
     :param state: state to evaluate (instance of GameState)
     :param player: player to evaluate the state for (B or W)
     """
-    W_CORNERS = 5
-    W_STABILITY = 5
-    W_MOBILITY = 1
+    game_phase = evaluate_game_phase(state)
+    if game_phase == "early":
+        W_CORNERS = 3
+        W_STABILITY = 1
+        W_MOBILITY = 5
+        W_COUNT = 0
+
+    elif game_phase == "mid":
+        W_CORNERS = 5
+        W_STABILITY = 5
+        W_MOBILITY = 1
+        W_COUNT = 0
+    else: 
+        W_CORNERS = 5
+        W_STABILITY = 3
+        W_MOBILITY = 1
+        W_COUNT = 5
+
 
     heuristic_value = (
         W_CORNERS * corners_heuristic(state, player) + 
         W_STABILITY * stability_heuristic(state, player) + 
-        W_MOBILITY * mobility_heuristic(state, player))
-
+        W_MOBILITY * mobility_heuristic(state, player) + 
+        W_COUNT * evaluate_count(state, player))
+        
     return heuristic_value
+
+
+def evaluate_game_phase(state) -> str:
+    total_pieces = 64 - state.board.num_pieces(Board.EMPTY)
+    if total_pieces < MID:
+        return "early"
+    elif total_pieces < LATE:
+        return "mid"
+    else:
+        return "late"
+
 
 def mobility_heuristic(state, player:str) -> float:
     opponent = Board.opponent(player)
@@ -267,7 +297,15 @@ def is_stable(state, player:str, tile_position:tuple) -> bool:
     
     return False
     
+
+def evaluate_count(state, player:str) -> float:
+    opponent = Board.opponent(player)
     
+    player_pieces = state.board.num_pieces(player)
+    opponent_pieces = state.board.num_pieces(opponent)
+    
+    return normalize(player_pieces, opponent_pieces)
+
     
 
         
