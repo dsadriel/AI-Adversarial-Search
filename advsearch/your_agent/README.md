@@ -75,14 +75,15 @@ Abaixo está a tabela de resultados do torneio interno entre os três agentes (`
 
 | Partida | Agente Preto (B) | Agente Branco (W) | Vencedor | Placar Final (B x W) |
 |:---:|:---|:---|:---:|:---:|
-| **1** | Contagem de Peças | Valor Posicional | Valor Posicional | 23 x 41 |
-| **2** | Valor Posicional | Contagem de Peças | Valor Posicional | 37 x 27 |
-| **3** | Contagem de Peças | Heurística Customizada | Heurística Customizada | 7 x 57 |
-| **4** | Heurística Customizada | Contagem de Peças | Heurística Customizada | 57 x 7 |
+| **1** | Contagem de Peças | Valor Posicional | Valor Posicional | 28 x 36 |
+| **2** | Valor Posicional | Contagem de Peças | Contagem de Peças | 29 x 35 |
+| **3** | Contagem de Peças | Heurística Customizada | Heurística Customizada | 15 x 49 |
+| **4** | Heurística Customizada | Contagem de Peças | Heurística Customizada | 61 x 3 |
 | **5** | Valor Posicional | Heurística Customizada | Heurística Customizada | 11 x 53 |
-| **6** | Heurística Customizada | Valor Posicional | Heurística Customizada | 44 x 20 |
+| **6** | Heurística Customizada | Valor Posicional | Heurística Customizada | 40 x 24 |
 
-**Agente Mais Bem-Sucedido:** **Heurística Customizada** (4 vitórias, 211 peças capturadas no total).
+**Agente Mais Bem-Sucedido:** **Heurística Customizada** (4 vitórias, 203 peças capturadas no total).
+
 > O agente com a heurística customizada possui comportamento não-determinístico devido ao aprofundamento iterativa limitado por tempo, mas mostrou-se consistentemente superior aos agentes `Count` e `Mask` em todas as partidas.
 ---
 
