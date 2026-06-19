@@ -61,13 +61,12 @@ Os pesos dessas sub-heurísticas variam dinamicamente dependendo da fase do jogo
 Os pesos acima não foram importados de fórmulas prontas de literatura. Eles são frutos de um refinamento empírico manual realizado pelo grupo:
 - **Ajuste de Mobilidade:** Testamos a influência da mobilidade variando de 3x, 5x e 10x menos peso em relação às quinas. Descobrimos que um peso de mobilidade alto no início (`5`) e baixo nas fases posteriores (`1`) era essencial para manter a busca profunda sem perder a capacidade de encurralar o adversário.
 - **Divisão por Fases:** Introduzimos a ativação dinâmica do `W_COUNT` (paridade de moedas) apenas no final do jogo (`Late Game`), mantendo-o nulo nas fases iniciais. Isso evitou que o agente capturasse muitas peças prematuramente no início e ficasse sem opções de movimentos válidos no meio de jogo.
-- **Validação:** Rodamos simulações locais comparando variações de pesos candidatas da literatura, mas a calibração manual desenvolvida pelo grupo provou-se a mais consistente e com a maior taxa de peças e vitórias nos testes locais contra os agentes `count` e `mask`.
+- **Validação:** Rodamos simulações locais comparando variações de pesos candidatas da literatura, mas a calibração manual desenvolvida pelo grupo provou-se a mais consistente e com a maior taxa de peças nos testes locais contra os agentes `count` e `mask`.
 
 
 
 ### Critério de Parada
 O agente utiliza **Busca por Aprofundamento Iterativo (Iterative Deepening)**. Ele realiza buscas completas de profundidade incremental (iniciando em 1) e utiliza um controle de tempo. Se a busca estourar o limite interno de **4,9 segundos** (a fim de respeitar os 5 segundos máximos do torneio de forma segura), uma exceção `TimeoutException` é levantada, interrompendo o ciclo e retornando o melhor movimento encontrado na iteração completa anterior.
-
 ---
 
 ## Resultados do Mini-Torneio de Othello
@@ -93,4 +92,4 @@ A nossa estratégia escolhida para o torneio oficial utiliza o algoritmo Minimax
 ---
 
 ## Declaração de Uso de IA (LLMs)
-Durante o desenvolvimento do projeto, foram utilizadas IAs generativas como ferramenta de apoio, principalmente como meio de realizar brainstorming, tirar dúvidas conceituais, auxiliar no debug de códigos e polir a escrita do relatório. Todas as funções criadas foram desenvolvidas e/ou validadas pelos membros do grupo.
+Durante o desenvolvimento do projeto, foram utilizadas IAs generativas como ferramenta de apoio, principalmente como meio de realizar brainstorming, tirar dúvidas conceituais, auxiliar no debug de códigos e polir a escrita do relatório. Todas as funções criadas foram desenvolvidas e validadas pelos membros do grupo.

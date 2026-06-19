@@ -291,11 +291,50 @@ def found_opponent_or_blank(direction, tile_position, state, player, opponent) -
         return (False, True)
 
 
-def is_stable(state, player:str, tile_position:tuple) -> bool:
+"""
+Na verificacao is_stable, uma peça eh estavel por todo o jogo se:
+- estiver em uma das quatro bordas
+- antes ou depois da peça, haver apenas peças do seu tipo até um canto OU
+- não haverem espaços em branco antes ou depois da peça
+"""
+def is_stable(state, player:str, tile_position:tuple) -> bool: 
+    tx, ty = tile_position
+    
     if tile_position in CORNERS:
        return True
+       
+    if not (tx == 0 or tx == 7 or ty == 0 or ty == 7):
+        return False
+        
+    if tx == 0:     
+        edge = state.board.tiles[0]
+        position_edge = ty
+
+    elif tx == 7:   
+        edge = state.board.tiles[7]
+        position_edge = ty
+
+    elif ty == 0:   
+        edge = [state.board.tiles[linha][0] for linha in range(8)]
+        position_edge = tx
+
+    else:          
+        edge = [state.board.tiles[linha][7] for linha in range(8)]
+        position_edge = tx
     
+    if Board.EMPTY not in edge:
+        return True
+
+    spaces_before = edge[:position_edge] 
+    if all(space == player for space in spaces_before):
+        return True
+        
+    spaces_after = edge[position_edge + 1:] 
+    if all(space == player for space in spaces_after):
+        return True
+
     return False
+
     
 
 def evaluate_count(state, player:str) -> float:
