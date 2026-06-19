@@ -3,8 +3,7 @@ import time
 from .utils import TimeoutException
 from typing import Tuple, Callable
 
-# default = 4.9
-TIME_LIMIT = 4.9
+TIME_LIMIT = 4.7
 
 def MIN(state, alpha, beta, depth, start, eval_func, player):
     if time.time() - start > TIME_LIMIT: 
@@ -13,7 +12,7 @@ def MIN(state, alpha, beta, depth, start, eval_func, player):
     if (state.is_terminal() or depth == 0):
         return eval_func(state, player)
     val = float('inf')
-    for legal_move in state.legal_moves():
+    for legal_move in sorted(state.legal_moves()):
         val = min(val, MAX(state.next_state(legal_move), alpha, beta, depth - 1, start, eval_func, player))
         beta = min(beta, val)
         if beta <= alpha:
@@ -28,7 +27,7 @@ def MAX(state, alpha, beta, depth, start, eval_func, player):
     if (state.is_terminal() or depth == 0):
         return eval_func(state, player)
     val = float('-inf')
-    for legal_move in state.legal_moves():
+    for legal_move in sorted(state.legal_moves()):
         val = max(val, MIN(state.next_state(legal_move), alpha, beta, depth - 1, start, eval_func, player))
         alpha = max(alpha, val)
         if beta <= alpha:
@@ -49,7 +48,7 @@ def minimax_move(state, max_depth:int, start, eval_func:Callable) -> Tuple[int, 
     bestAction = None
     bestValue = float('-inf')
 
-    for legal_move in state.legal_moves():
+    for legal_move in sorted(state.legal_moves()):
         value = MIN(state.next_state(legal_move), float('-inf'), float('inf'), max_depth - 1, start, eval_func, state.player)
         if value > bestValue:
             bestValue = value
