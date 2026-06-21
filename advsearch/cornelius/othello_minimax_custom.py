@@ -1,10 +1,7 @@
-import random
 from typing import Tuple
 from ..othello.gamestate import GameState
 from ..othello.board import Board
-from .minimax import minimax_move
-import time
-from .utils import TimeoutException
+from .minimax import iterative_deepening_minimax_move
 from .utils import normalize
 # Voce pode criar funcoes auxiliares neste arquivo
 # e tambem modulos auxiliares neste pacote.
@@ -24,17 +21,7 @@ def make_move(state) -> Tuple[int, int]:
     :param state: state to make the move
     :return: (int, int) tuple with x, y coordinates of the move (remember: 0 is the first row/column)
     """
-
-    start = time.time()
-
-    for depth in range (1, 65):
-        try:
-            move = minimax_move(state, depth, start, evaluate_custom)
-        
-        except TimeoutException:
-            break
-
-    return move 
+    return iterative_deepening_minimax_move(state, evaluate_custom)
 
 
 

@@ -75,12 +75,12 @@ Abaixo está a tabela de resultados do torneio interno entre os três agentes (`
 
 | Partida | Agente Preto (B) | Agente Branco (W) | Vencedor | Placar Final (B x W) |
 |:---:|:---|:---|:---:|:---:|
-| **1** | Contagem de Peças | Valor Posicional | Valor Posicional | 23 x 41 |
-| **2** | Valor Posicional | Contagem de Peças | Valor Posicional | 37 x 27 |
-| **3** | Contagem de Peças | Heurística Customizada | Heurística Customizada | 7 x 57 |
-| **4** | Heurística Customizada | Contagem de Peças | Heurística Customizada | 51 x 13 |
-| **5** | Valor Posicional | Heurística Customizada | Heurística Customizada | 22 x 42 |
-| **6** | Heurística Customizada | Valor Posicional | Heurística Customizada | 33 x 31 |
+| **1** | Contagem de Peças | Valor Posicional | Valor Posicional | 27 x 37 |
+| **2** | Valor Posicional | Contagem de Peças | Valor Posicional | 35 x 29 |
+| **3** | Contagem de Peças | Heurística Customizada | Heurística Customizada | 16 x 48 |
+| **4** | Heurística Customizada | Contagem de Peças | Heurística Customizada | 53 x 11 |
+| **5** | Valor Posicional | Heurística Customizada | Heurística Customizada | 20 x 44 |
+| **6** | Heurística Customizada | Valor Posicional | Heurística Customizada | 49 x 15 |
 
 **Agente Mais Bem-Sucedido:** **Heurística Customizada** (4 vitórias, 183 peças capturadas no total).
 > Os agentes possuem comportamento não-determinístico devido ao aprofundamento iterativo limitado por tempo, mas a Heurística Customizada mostrou-se consistentemente superior aos agentes `Count` e `Mask` em todas as partidas.
@@ -92,4 +92,4 @@ A nossa estratégia escolhida para o torneio oficial utiliza o algoritmo Minimax
 ---
 
 ## Declaração de Uso de IA (LLMs)
-Durante o desenvolvimento do projeto, foram utilizadas IAs generativas como ferramenta de apoio, principalmente como meio de realizar brainstorming, tirar dúvidas conceituais, auxiliar no debug de códigos e polir a escrita do relatório. Todas as funções criadas foram desenvolvidas e validadas pelos membros do grupo.
+Durante o desenvolvimento do projeto, foram utilizadas IAs generativas como ferramenta de apoio, principalmente como meio de realizar brainstorming, tirar dúvidas conceituais, auxiliar no debug de códigos e polir a escrita do relatório. Todas as funções criadas foram desenvolvidas e validadas pelos membros do grupo. Além disso, foi utilizada para criar o gerenciador de tempo do Interactive Deepening, que interrompe a busca caso o tempo limite seja atingido, esta  que trabalha com threading e exceções. 
