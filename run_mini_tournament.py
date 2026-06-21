@@ -23,8 +23,8 @@ def rodar_partida(args):
     # Criamos nomes de logs específicos para evitar conflitos de gravação concorrente
     cmd = [
         sys.executable, "server.py", "othello", 
-        f"advsearch/your_agent/{b_file}.py", 
-        f"advsearch/your_agent/{w_file}.py", 
+        f"advsearch/cornelius/{b_file}.py", 
+        f"advsearch/cornelius/{w_file}.py", 
         "-d", "5.0", "-p", "0",
         "-o", f"results_{idx}.xml", "-l", f"history_{idx}.txt"
     ]
