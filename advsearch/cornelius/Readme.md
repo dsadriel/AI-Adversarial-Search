@@ -53,9 +53,9 @@ Nossa heurística customizada baseia-se na no artigo ["An Analysis of Heuristics
 4. **Stability (Estabilidade):** Avaliação de quais peças já estão seguras (estáveis) versus peças flanqueáveis (instáveis).
 
 Os pesos dessas sub-heurísticas variam dinamicamente dependendo da fase do jogo:
-* **Early Game (menos de 20 peças):** Foco em mobilidade para restringir o oponente e preparação para quinas. `W_CORNERS = 3`, `W_STABILITY = 1`, `W_MOBILITY = 5`, `W_COUNT = 0`.
-* **Mid Game (entre 20 e 50 peças):** Transição estratégica focada em estabilidade e cantos. `W_CORNERS = 5`, `W_STABILITY = 5`, `W_MOBILITY = 1`, `W_COUNT = 0`.
-* **Late Game (mais de 50 peças):** Foco absoluto na contagem de peças para garantir a pontuação máxima de vitória. `W_CORNERS = 5`, `W_STABILITY = 3`, `W_MOBILITY = 1`, `W_COUNT = 5`.
+* **Early Game (menos de 20 peças):** Foco em mobilidade para restringir o oponente e preparação para quinas. `W_CORNERS = 5`, `W_STABILITY = 1`, `W_MOBILITY = 5`, `W_COUNT = 0`.
+* **Mid Game (entre 20 e 50 peças):** Transição estratégica focada em estabilidade e cantos, porém sem perder mobilidade. `W_CORNERS = 10`, `W_STABILITY = 5`, `W_MOBILITY = 3`, `W_COUNT = 0`.
+* **Late Game (mais de 50 peças):** Foco absoluto na contagem de peças e obtenção dos cantos para garantir a pontuação máxima de vitória. `W_CORNERS = 15`, `W_STABILITY = 3`, `W_MOBILITY = 1`, `W_COUNT = 3`.
 
 #### Origem e Sintonia dos Pesos:
 Os pesos acima não foram importados de fórmulas prontas de literatura. Eles são frutos de um refinamento empírico manual realizado pelo grupo:
@@ -67,6 +67,7 @@ Os pesos acima não foram importados de fórmulas prontas de literatura. Eles s�
 
 ### Critério de Parada
 O agente utiliza **Busca por Aprofundamento Iterativo (Iterative Deepening)**. Ele realiza buscas completas de profundidade incremental (iniciando em 1) e utiliza um controle de tempo. Se a busca estourar o limite interno de **4,9 segundos** (a fim de respeitar os 5 segundos máximos do torneio de forma segura), uma exceção `TimeoutException` é levantada, interrompendo o ciclo e retornando o melhor movimento encontrado na iteração completa anterior.
+
 ---
 
 ## Resultados do Mini-Torneio de Othello
@@ -75,19 +76,19 @@ Abaixo está a tabela de resultados do torneio interno entre os três agentes (`
 
 | Partida | Agente Preto (B) | Agente Branco (W) | Vencedor | Placar Final (B x W) |
 |:---:|:---|:---|:---:|:---:|
-| **1** | Contagem de Peças | Valor Posicional | Valor Posicional | 27 x 37 |
+| **1** | Contagem de Peças | Valor Posicional | Valor Posicional | 19 x 45 |
 | **2** | Valor Posicional | Contagem de Peças | Valor Posicional | 35 x 29 |
-| **3** | Contagem de Peças | Heurística Customizada | Heurística Customizada | 16 x 48 |
-| **4** | Heurística Customizada | Contagem de Peças | Heurística Customizada | 53 x 11 |
-| **5** | Valor Posicional | Heurística Customizada | Heurística Customizada | 20 x 44 |
-| **6** | Heurística Customizada | Valor Posicional | Heurística Customizada | 49 x 15 |
+| **3** | Contagem de Peças | Heurística Customizada | Heurística Customizada | 11 x 53 |
+| **4** | Heurística Customizada | Contagem de Peças | Heurística Customizada | 58 x 6 |
+| **5** | Valor Posicional | Heurística Customizada | Heurística Customizada | 22 x 42 |
+| **6** | Heurística Customizada | Valor Posicional | Heurística Customizada | 53 x 11 |
 
 **Agente Mais Bem-Sucedido:** **Heurística Customizada** (4 vitórias, 183 peças capturadas no total).
 > Os agentes possuem comportamento não-determinístico devido ao aprofundamento iterativo limitado por tempo, mas a Heurística Customizada mostrou-se consistentemente superior aos agentes `Count` e `Mask` em todas as partidas.
 ---
 
 ## Implementação do Agente de Torneio
-A nossa estratégia escolhida para o torneio oficial utiliza o algoritmo Minimax com Poda Alfa-Beta, usando a **Heurística Customizada** parametrizada por fase de jogo com aprofundamento iterativo por tempo (timeout seguro em 4.7s). Essa configuração se provou superior tanto na facilidade de capturar cantos quanto na consistência em encurralar os oponentes através do cálculo de mobilidade.
+A nossa estratégia escolhida para o torneio oficial utiliza o algoritmo Minimax com Poda Alfa-Beta, usando a **Heurística Customizada** parametrizada por fase de jogo com aprofundamento iterativo por tempo (timeout seguro em 4.9s). Essa configuração se provou superior tanto na facilidade de capturar cantos quanto na consistência em encurralar os oponentes através do cálculo de mobilidade.
 
 ---
 

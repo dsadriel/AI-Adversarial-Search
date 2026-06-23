@@ -3,11 +3,7 @@ from ..othello.gamestate import GameState
 from ..othello.board import Board
 from .minimax import iterative_deepening_minimax_move
 from .utils import normalize
-# Voce pode criar funcoes auxiliares neste arquivo
-# e tambem modulos auxiliares neste pacote.
-#
-# Nao esqueca de renomear 'your_agent' com o nome
-# do seu agente.
+
 
 CORNERS = [(0, 0), (0, 7), (7, 0), (7, 7)]
 
@@ -35,21 +31,21 @@ def evaluate_custom(state, player:str) -> float:
     """
     game_phase = evaluate_game_phase(state)
     if game_phase == "early":
-        W_CORNERS = 3
+        W_CORNERS = 5
         W_STABILITY = 1
         W_MOBILITY = 5
         W_COUNT = 0
 
     elif game_phase == "mid":
-        W_CORNERS = 5
+        W_CORNERS = 10
         W_STABILITY = 5
-        W_MOBILITY = 1
+        W_MOBILITY = 3
         W_COUNT = 0
     else: 
-        W_CORNERS = 5
+        W_CORNERS = 15
         W_STABILITY = 3
         W_MOBILITY = 1
-        W_COUNT = 5
+        W_COUNT = 3
 
 
     heuristic_value = (
